@@ -1,0 +1,26 @@
+From c149aedf01c0b07b89b3f9ca3937fe7b88018195 Mon Sep 17 00:00:00 2001
+From: David Mohr <david@mcbf.net>
+Date: Tue, 26 May 2015 20:34:31 -0600
+Subject: [PATCH 1/2] Don't inline crc64 for gcc-5 compatibility
+
+By James Cowgill, see Debian bug #777798
+---
+ bcache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bcache.c b/bcache.c
+index 8f37445..8b4b986 100644
+--- a/bcache.c
++++ b/bcache.c
+@@ -115,7 +115,7 @@ static const uint64_t crc_table[256] = {
+ 	0x9AFCE626CE85B507ULL
+ };
+ 
+-inline uint64_t crc64(const void *_data, size_t len)
++uint64_t crc64(const void *_data, size_t len)
+ {
+ 	uint64_t crc = 0xFFFFFFFFFFFFFFFFULL;
+ 	const unsigned char *data = _data;
+-- 
+2.20.1
+

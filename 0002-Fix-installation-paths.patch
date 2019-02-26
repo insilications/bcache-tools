@@ -1,0 +1,37 @@
+From 04ffe60150308879ddfdb7ea1c22e0b523d9ac70 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Tue, 26 Feb 2019 11:32:10 -0800
+Subject: [PATCH 2/2] Fix installation paths
+
+---
+ Makefile | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index c60e814..5d4c3db 100644
+--- a/Makefile
++++ b/Makefile
+@@ -9,14 +9,18 @@ PKG_CONFIG ?= pkg-config
+ all: make-bcache probe-bcache bcache-super-show bcache-register
+ 
+ install: make-bcache probe-bcache bcache-super-show
+-	$(INSTALL) -m0755 make-bcache bcache-super-show	$(DESTDIR)${PREFIX}/sbin/
++	$(INSTALL) -d $(DESTDIR)${PREFIX}/bin/
++	$(INSTALL) -m0755 make-bcache bcache-super-show	$(DESTDIR)${PREFIX}/bin/
++	$(INSTALL) -d $(DESTDIR)$(UDEVLIBDIR)/
+ 	$(INSTALL) -m0755 probe-bcache bcache-register		$(DESTDIR)$(UDEVLIBDIR)/
++	$(INSTALL) -d $(DESTDIR)$(UDEVLIBDIR)/rules.d/
+ 	$(INSTALL) -m0644 69-bcache.rules	$(DESTDIR)$(UDEVLIBDIR)/rules.d/
++	$(INSTALL) -d $(DESTDIR)${PREFIX}/share/man/man8/
+ 	$(INSTALL) -m0644 -- *.8 $(DESTDIR)${PREFIX}/share/man/man8/
+ 	$(INSTALL) -D -m0755 initramfs/hook	$(DESTDIR)/usr/share/initramfs-tools/hooks/bcache
+ 	$(INSTALL) -D -m0755 initcpio/install	$(DESTDIR)/usr/lib/initcpio/install/bcache
+ 	$(INSTALL) -D -m0755 dracut/module-setup.sh $(DESTDIR)$(DRACUTLIBDIR)/modules.d/90bcache/module-setup.sh
+-#	$(INSTALL) -m0755 bcache-test $(DESTDIR)${PREFIX}/sbin/
++#	$(INSTALL) -m0755 bcache-test $(DESTDIR)${PREFIX}/bin/
+ 
+ clean:
+ 	$(RM) -f make-bcache probe-bcache bcache-super-show bcache-test -- *.o
+-- 
+2.20.1
+
