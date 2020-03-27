@@ -4,7 +4,7 @@
 #
 Name     : bcache-tools
 Version  : 494f8d187c74f557dfebbb5dc3591453436b507b
-Release  : 1
+Release  : 2
 URL      : https://github.com/koverstreet/bcache-tools/archive/494f8d187c74f557dfebbb5dc3591453436b507b.tar.gz
 Source0  : https://github.com/koverstreet/bcache-tools/archive/494f8d187c74f557dfebbb5dc3591453436b507b.tar.gz
 Summary  : No detailed summary available
