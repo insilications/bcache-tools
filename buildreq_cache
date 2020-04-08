@@ -1,3 +1,4 @@
 494f8d187c74f557dfebbb5dc3591453436b507b
 pkgconfig(blkid)
 pkgconfig(uuid)
+util-linux-dev

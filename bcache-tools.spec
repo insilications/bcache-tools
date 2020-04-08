@@ -4,18 +4,20 @@
 #
 Name     : bcache-tools
 Version  : 494f8d187c74f557dfebbb5dc3591453436b507b
-Release  : 2
+Release  : 3
 URL      : https://github.com/koverstreet/bcache-tools/archive/494f8d187c74f557dfebbb5dc3591453436b507b.tar.gz
 Source0  : https://github.com/koverstreet/bcache-tools/archive/494f8d187c74f557dfebbb5dc3591453436b507b.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: bcache-tools-bin = %{version}-%{release}
+Requires: bcache-tools-config = %{version}-%{release}
 Requires: bcache-tools-data = %{version}-%{release}
 Requires: bcache-tools-license = %{version}-%{release}
 Requires: bcache-tools-man = %{version}-%{release}
 BuildRequires : pkgconfig(blkid)
 BuildRequires : pkgconfig(uuid)
+BuildRequires : util-linux-dev
 Patch1: 0001-Don-t-inline-crc64-for-gcc-5-compatibility.patch
 Patch2: 0002-Fix-installation-paths.patch
 
@@ -30,11 +32,19 @@ Documentation/bcache.txt.
 Summary: bin components for the bcache-tools package.
 Group: Binaries
 Requires: bcache-tools-data = %{version}-%{release}
+Requires: bcache-tools-config = %{version}-%{release}
 Requires: bcache-tools-license = %{version}-%{release}
-Requires: bcache-tools-man = %{version}-%{release}
 
 %description bin
 bin components for the bcache-tools package.
+
+
+%package config
+Summary: config components for the bcache-tools package.
+Group: Default
+
+%description config
+config components for the bcache-tools package.
 
 
 %package data
@@ -63,6 +73,7 @@ man components for the bcache-tools package.
 
 %prep
 %setup -q -n bcache-tools-494f8d187c74f557dfebbb5dc3591453436b507b
+cd %{_builddir}/bcache-tools-494f8d187c74f557dfebbb5dc3591453436b507b
 %patch1 -p1
 %patch2 -p1
 
@@ -70,31 +81,38 @@ man components for the bcache-tools package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1551209650
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1586369885
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 make  %{?_smp_mflags}
 
 
 %install
-export SOURCE_DATE_EPOCH=1551209650
+export SOURCE_DATE_EPOCH=1586369885
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/bcache-tools
-cp COPYING %{buildroot}/usr/share/package-licenses/bcache-tools/COPYING
-%make_install
+cp %{_builddir}/bcache-tools-494f8d187c74f557dfebbb5dc3591453436b507b/COPYING %{buildroot}/usr/share/package-licenses/bcache-tools/b47456e2c1f38c40346ff00db976a2badf36b5e3
+%make_install UDEVLIBDIR=/usr/lib/udev DRACUTLIBDIR=/usr/lib/dracut
 
 %files
 %defattr(-,root,root,-)
-/lib/dracut/modules.d/90bcache/module-setup.sh
-/lib/udev/bcache-register
-/lib/udev/probe-bcache
-/lib/udev/rules.d/69-bcache.rules
+/usr/lib/dracut/modules.d/90bcache/module-setup.sh
 /usr/lib/initcpio/install/bcache
+/usr/lib/udev/bcache-register
+/usr/lib/udev/probe-bcache
 
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/bcache-super-show
 /usr/bin/make-bcache
+
+%files config
+%defattr(-,root,root,-)
+/usr/lib/udev/rules.d/69-bcache.rules
 
 %files data
 %defattr(-,root,root,-)
@@ -102,7 +120,7 @@ cp COPYING %{buildroot}/usr/share/package-licenses/bcache-tools/COPYING
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/bcache-tools/COPYING
+/usr/share/package-licenses/bcache-tools/b47456e2c1f38c40346ff00db976a2badf36b5e3
 
 %files man
 %defattr(0644,root,root,0755)
