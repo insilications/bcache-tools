@@ -1,5 +1,6 @@
 PKG_NAME := bcache-tools
-URL = https://github.com/koverstreet/bcache-tools/archive/494f8d187c74f557dfebbb5dc3591453436b507b.tar.gz
+URL = https://git.kernel.org/pub/scm/linux/kernel/git/colyli/bcache-tools.git
 ARCHIVES = 
+ARCHIVES_GIT = 
 
 include ../common/Makefile.common

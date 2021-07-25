@@ -1,2 +1,3 @@
-0001-Don-t-inline-crc64-for-gcc-5-compatibility.patch
-0002-Fix-installation-paths.patch
+#0001-Don-t-inline-crc64-for-gcc-5-compatibility.patch
+#0002-Fix-installation-paths.patch
+0001-Fix-Makefile.patch

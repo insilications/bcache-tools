@@ -1,0 +1,39 @@
+From 150322aaecfdf02c240232497277b2687600d3fa Mon Sep 17 00:00:00 2001
+From: Francisco Boni <boboniboni@gmail.com>
+Date: Sun, 25 Jul 2021 03:49:29 -0300
+Subject: [PATCH] Fix Makefile
+
+---
+ Makefile | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 5496c35..283376b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -8,15 +8,19 @@ CFLAGS+=-O2 -Wall -g
+ all: make-bcache probe-bcache bcache-super-show bcache-register bcache
+ 
+ install: make-bcache probe-bcache bcache-super-show
+-	$(INSTALL) -m0755 make-bcache bcache-super-show	bcache $(DESTDIR)${PREFIX}/sbin/
+-	$(INSTALL) -m0755 bcache-status $(DESTDIR)${PREFIX}/sbin/
++	$(INSTALL) -d $(DESTDIR)${PREFIX}/bin/
++	$(INSTALL) -m0755 make-bcache bcache-super-show	bcache $(DESTDIR)${PREFIX}/bin/
++	$(INSTALL) -m0755 bcache-status $(DESTDIR)${PREFIX}/bin/
++	$(INSTALL) -d $(DESTDIR)$(UDEVLIBDIR)/
+ 	$(INSTALL) -m0755 probe-bcache bcache-register bcache-export-cached $(DESTDIR)$(UDEVLIBDIR)/
++	$(INSTALL) -d $(DESTDIR)$(UDEVLIBDIR)/rules.d/
+ 	$(INSTALL) -m0644 69-bcache.rules	$(DESTDIR)$(UDEVLIBDIR)/rules.d/
++	$(INSTALL) -d $(DESTDIR)${PREFIX}/share/man/man8/
+ 	$(INSTALL) -m0644 -- *.8 $(DESTDIR)${PREFIX}/share/man/man8/
+ 	$(INSTALL) -D -m0755 initramfs/hook	$(DESTDIR)/usr/share/initramfs-tools/hooks/bcache
+ 	$(INSTALL) -D -m0755 initcpio/install	$(DESTDIR)/usr/lib/initcpio/install/bcache
+ 	$(INSTALL) -D -m0755 dracut/module-setup.sh $(DESTDIR)$(DRACUTLIBDIR)/modules.d/90bcache/module-setup.sh
+-#	$(INSTALL) -m0755 bcache-test $(DESTDIR)${PREFIX}/sbin/
++#	$(INSTALL) -m0755 bcache-test $(DESTDIR)${PREFIX}/bin/
+ 
+ clean:
+ 	$(RM) -f bcache make-bcache probe-bcache bcache-super-show bcache-register bcache-test -- *.o
+-- 
+2.32.0
+
